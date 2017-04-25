@@ -1,0 +1,41 @@
+public static boolean isMatch(String s, String p){
+        if (s.equals(p))
+            return true;
+        if (p.equals(""))
+            return false;
+        if (Character.isLetter(p.charAt(p.length()-1))){
+            if (s.equals(""))
+                return false;
+            if (s.charAt(s.length()-1) == p.charAt(p.length()-1))
+                return isMatch(s.substring(0, s.length()-1), p.substring(0, p.length()-1));
+        }
+
+        if (p.charAt(p.length()-1) == '.'){
+            if (s.equals(""))
+                return false;
+            return isMatch(s.substring(0, s.length() - 1), p.substring(0, p.length() - 1));
+        }
+        if (p.charAt(p.length()-1) == '*'){
+            if (s.equals(""))
+                return isMatch(s, p.substring(0, p.length() - 2));
+            char temp = p.charAt(p.length() - 2);
+            if (Character.isLetter(temp)){
+                if (temp == s.charAt(s.length() - 1)) {
+                    return (isMatch(s.substring(0, s.length() - 1), p) ||
+                            isMatch(s, p.substring(0, p.length() - 2)));
+                }
+                return isMatch(s, p.substring(0, p.length() - 2));
+            }
+            return (isMatch(s.substring(0, s.length() - 1), p) ||
+                    isMatch(s, p.substring(0, p.length() - 2)));
+        }
+
+
+        return false;
+    }
+
+    public static void main(String[] args){
+        String s = "ab";
+        String p = ".*";
+        System.out.println( isMatch(s, p) );
+    }

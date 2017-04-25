@@ -1,0 +1,39 @@
+/**
+ * Created by Andrew on 2017/4/3.
+ */
+public class test {
+
+    public static boolean isMatch(String s, String p){
+        if (s.equals(p))
+            return true;
+        if (p.isEmpty())
+            return s.isEmpty();
+        boolean[][] f = new boolean[s.length() + 1][p.length() + 1];//f[i][j] s[0 i-1] p[0 j-1]
+
+        f[0][0] = true;
+        for (int i = 1; i <= s.length(); i++) {
+            f[i][0] = false;
+        }
+        for (int j = 1; j <= p.length(); j++) {
+            f[0][j] = f[0][j-1] && (p.charAt(j-1) == '*');
+        }
+
+        for (int i = 1; i <= s.length(); i++) {
+            for (int j = 1; j <= p.length(); j++) {
+                if (p.charAt(j-1) == '?')
+                    f[i][j] = f[i-1][j-1];
+                if (Character.isLetter(p.charAt(j-1)))
+                    f[i][j] = f[i-1][j-1] && (s.charAt(i-1) == p.charAt(j-1));
+                if (p.charAt(j-1) == '*')
+                    f[i][j] = f[i][j-1] || f[i-1][j];
+            }
+        }
+        return f[s.length()][p.length()];
+    }
+
+    public static void main(String[] args){
+        String s = "aa";
+        String p = "aa";
+        System.out.println( isMatch(s, p) );
+    }
+}

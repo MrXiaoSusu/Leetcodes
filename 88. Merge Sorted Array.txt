@@ -1,0 +1,41 @@
+import java.util.Arrays;
+
+/**
+ * Created by Andrew on 2017/4/3.
+ */
+public class test {
+
+    public static void merge(int[] nums1, int m, int[] nums2, int n) {
+        int j = 0, i = 0, k = 0;
+        int[] nums3 = new int[m+n];
+        while(i < m && j < n) {
+            if (nums1[i] <= nums2[j]) {
+                nums3[k++] = nums1[i++];
+            }
+            else
+                nums3[k++] = nums2[j++];
+        }
+        if(j != n) {
+            while(k < n + m) {
+                nums3[k++] = nums2[j++];
+            }
+        }
+        if (i != m) {
+            while(k < n + m) {
+                nums3[k++] = nums1[i++];
+            }
+        }
+        for (int l = 0; l < n+m; l++) {
+            nums1[l] = nums3[l];
+        }
+    }
+
+    public static void main(String[] args){
+        int[] nums1 = {1,2,3,4,5,6};
+        int[] nums2 = {3,6,8,12,34,56};
+        merge(nums1, nums1.length,nums2, nums2.length);
+        for (int i = 0; i < nums1.length; i++) {
+            System.out.print(nums1[i]);
+        }
+    }
+}
