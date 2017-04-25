@@ -1,0 +1,77 @@
+import java.util.Arrays;
+
+/**
+ * Created by Andrew on 2017/4/3.
+ */
+public class test {
+
+    //Definition for singly-linked list.
+    public static class ListNode {
+        int val;
+        ListNode next;
+        ListNode(int x) { val = x; }
+    }
+    public static ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+        ListNode f = new ListNode(0);
+        ListNode p = f;
+        while (l1 != null && l2 != null) {
+            if (l1.val > l2.val){
+                ListNode T = new ListNode(l2.val);
+                p.next = T;
+                l2 = l2.next;
+            }
+            else {
+                ListNode T = new ListNode(l1.val);
+                p.next = T;
+                l1 = l1.next;
+            }
+            p = p.next;
+        }
+        if (l2 != null)
+            p.next = l2;
+        if (l1 != null)
+            p.next = l1;
+
+        return f.next;
+    }
+
+    public static ListNode mergeKLists(ListNode[] listNodes){
+
+        int k = listNodes.length;
+        if (k == 0)
+            return null;
+
+        if (k ==1)
+            return listNodes[0];
+        if (k ==2)
+            return mergeTwoLists(listNodes[0], listNodes[1]);
+
+        int h = k/2;
+        ListNode[] l1 = new ListNode[h];
+        ListNode[] l2 = new ListNode[k-h];
+
+        for (int i = 0; i < h; i++) {
+            l1[i] = listNodes[i];
+        }
+        for (int j = 0, i = h; i < k; i++,j++) {
+            l2[j] = listNodes[i];
+        }
+        return mergeTwoLists(mergeKLists(l1), mergeKLists(l2));
+    }
+
+    public static void main(String[] args) {
+
+        ListNode l3 = new ListNode(4);
+        ListNode l4 = new ListNode(3);
+        ListNode l1 = new ListNode(2);
+        ListNode l2 = new ListNode(1);
+        ListNode[] list = {l3, l4, l1, l2};
+
+        ListNode res = mergeKLists(list);
+        while (res != null) {
+            System.out.print(res.val);
+            res = res.next;
+        }
+
+    }
+}
