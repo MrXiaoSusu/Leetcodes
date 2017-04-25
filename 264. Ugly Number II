@@ -1,0 +1,39 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+/**
+ * Created by Andrew on 2017/4/3.
+ */
+public class test {
+
+    public static int nthUglyNumber(int n) {
+        if (n <= 0)
+            return 0;
+        List<Integer> list = new ArrayList<Integer>();
+        int a = 0, b = 0, c = 0;
+        /*
+        1 2 3 4 5  6  8  9  10 12
+        2 4 6 8 10 12 16 20 24
+        3 6 9 1215 18 24 27 30
+        510 152025 30 40 45 50
+        每当找到最小的一个数，就算出它的2 3 5 倍，只需要比较三个数组的第一个数字即可。
+         */
+        list.add(1);
+        while(list.size() < n){
+
+            int val = Math.min(Math.min(list.get(a)*2, list.get(b)*3), list.get(c)*5);
+            list.add(val);
+            if (val == list.get(a)*2) a++;
+            if (val == list.get(b)*3) b++;
+            if (val == list.get(c)*5) c++;
+        }
+
+        return list.get(list.size()-1);
+    }
+
+
+    public static void main(String[] args) {
+        System.out.print(nthUglyNumber(80));
+    }
+}
