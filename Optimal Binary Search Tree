@@ -1,0 +1,79 @@
+import sun.reflect.generics.tree.Tree;
+
+import java.time.temporal.Temporal;
+import java.util.*;
+
+/**
+ * Created by Andrew on 2017/4/3.
+ */
+public class test {
+
+    private static int k[] = {1,2,3,4,5};
+    private static double p[] = {0.25, 0.2, 0.05, 0.2, 0.3};
+
+    public static class TreeNode {
+        int val;
+        TreeNode left;
+        TreeNode right;
+        TreeNode(int x) { val = x; }
+    }
+
+    public static TreeNode BuildTree(int i, int j, int[][] t){
+        if (i == j){
+            TreeNode treeNode = new TreeNode(k[t[i][j]-1]);
+            return treeNode;
+        }
+        if (i > j)
+            return null;
+
+        TreeNode treeNode = new TreeNode(t[i][j]);
+        treeNode.right = BuildTree(t[i][j]+1, j, t);
+        treeNode.left = BuildTree(i, t[i][j]-1, t);
+        return treeNode;
+    }
+
+    public static TreeNode OptimalBinarySearchTree(int n){
+        int result = 0;
+        double[][] w = new double[n+2][n+2];//minimum cost from i to j tree
+        double[][] s = new double[n+2][n+2];//sum of p[i j]
+        int[][] t = new int[n+2][n+2];//root of i-j binary search tree
+        for (int i = 1; i <= n; i++) {
+            w[i][i] = p[i-1];
+            s[i][i] = p[i-1];
+            t[i][i] = i;
+        }
+        for (int i = 1; i <= n; i++) {
+            for (int j = i+1; j <= n; j++) {
+                s[i][j] = s[i][j-1] + s[j][j];
+            }
+        }
+
+        for (int k = 1; k <= n-1; k++) {//step length
+            for (int i = 1 ; i <= n-k; i++) {
+                double minimum = Double.MAX_VALUE;
+                int root = -1;
+                for (int r = i; r <= i+k; r++) {//calculate w[i i+k] = min w[i r-1]+w[r+1 i+k]+s[i i+k]
+                    if (minimum > w[i][r-1] + w[r+1][i+k] + s[i][i+k]){
+                        minimum = w[i][r-1] + w[r+1][i+k] + s[i][i+k];
+                        root = r;
+                    }
+                }
+                w[i][i+k] = minimum;
+                t[i][i+k] = root;
+            }
+        }
+
+        //return w[1][n]; minimum cost of 1-n tree
+
+        TreeNode treeNode = BuildTree(1, n, t);
+        return treeNode;
+
+    }
+
+    public static void main(String[] args) {
+        int n = 5;
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println(OptimalBinarySearchTree(n));
+    }
+}
