@@ -1,0 +1,33 @@
+import sun.reflect.generics.tree.Tree;
+
+import java.time.temporal.Temporal;
+import java.util.*;
+
+/**
+ * Created by Andrew on 2017/4/3.
+ */
+public class test {
+
+    private static int p[] = {0, 1, 5, 8, 9, 10, 17, 17, 20};
+
+    public static int RodCutting(int n){
+        int[] r = new int[n+1];
+        for (int i = 1; i <= n; i++) {
+            int max = 0;
+            for (int j = 1; j <= i; j++) {
+                max = Math.max(max, p[j] + r[i-j]);
+            }
+            r[i] = max;
+        }
+        return r[n];
+    }
+
+    public static void main(String[] args) {
+        int n = 5;
+        Scanner scanner = new Scanner(System.in);
+        while (true){
+            n = scanner.nextInt();
+            System.out.println(RodCutting(n));
+        }
+    }
+}
