@@ -1,0 +1,72 @@
+import sun.reflect.generics.tree.Tree;
+
+import java.time.temporal.Temporal;
+import java.util.*;
+
+/**
+ * Created by Andrew on 2017/4/3.
+ */
+public class test {
+
+    public static class TreeNode {
+      int val;
+     TreeNode left;
+     TreeNode right;
+     TreeNode(int x) { val = x; }
+    }
+
+    public static void recoverTree(TreeNode root) {
+        //Morris
+        int val = 0;
+        TreeNode pNode = root;
+        TreeNode pPre = null, temp = null;
+        TreeNode first = null, second = null;
+        while(pNode != null){
+            if (pNode.left == null){//left child empty
+
+                //key segment
+                if (pPre != null && pPre.val > pNode.val){
+                    if (first == null){first = pPre; second = pNode;}
+                    else second = pNode;
+                }
+
+                pPre = pNode;
+                pNode = pNode.right;
+            } else {
+                temp = pNode.left;
+                while (temp.right != null && temp.right != pNode) {
+                    temp = temp.right;
+                }
+                if (temp.right != null){//already visited
+
+                    if (pPre != null && pPre.val > pNode.val){
+                        if (first == null){first = pPre; second = pNode;}
+                        else second = pNode;
+                    }
+                    temp.right = null;
+                    pPre = pNode;
+                    pNode = pNode.right;
+                } else {
+
+                    temp.right = pNode;
+                    pNode = pNode.left;
+                }
+            }
+        }
+        if (first != null && second != null){
+            int t = second.val;
+            second.val = first.val;
+            first.val = t;
+        }
+
+    }
+
+
+    public static void main(String[] args) {
+        int n = 0;
+        TreeNode treeNode = new TreeNode(2);
+        treeNode.right = new TreeNode(1);
+        recoverTree(treeNode);
+
+    }
+}
