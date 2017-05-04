@@ -1,0 +1,59 @@
+import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
+import sun.reflect.generics.tree.Tree;
+
+import java.time.temporal.Temporal;
+import java.util.*;
+
+/**
+ * Created by Andrew on 2017/5/4.
+ */
+public class test {
+
+
+    public static StringBuilder printmap(int[][] map, int i, int j){
+        StringBuilder sb = new StringBuilder();
+        if (i == j)
+            return sb.append("A"+i);
+        if (i > j)
+            return sb;
+        else {
+            sb.append('(');
+            sb.append(printmap(map, i, map[i][j]));
+            sb.append(')');
+            sb.append('(');
+            sb.append(printmap(map, map[i][j]+1, j));
+            sb.append(')');
+            return sb;
+        }
+    }
+
+    public static String MatrixchainMultiplication(int n, int d[]){
+
+        int[][] w = new int[n+1][n+1];
+        int[][] map = new int[n+1][n+1];
+
+        for (int step = 1; step <= n-1; step++) {
+            for (int i = 1; i <= n-step; i++) {
+                int j = i+step;
+                int min_val = Integer.MAX_VALUE, index = -1;
+                for (int k = i; k <= j-1; k++) {
+                    min_val = Math.min(min_val, w[i][k]+w[k+1][j]+d[i-1]*d[k]*d[j]);
+                    index = k;
+                }
+                map[i][j] = index;
+                w[i][j] = min_val;
+            }
+        }
+
+        StringBuilder sb = printmap(map, 1, n);
+
+
+        return sb.toString();
+    }
+
+    public static void main(String[] args) {
+        int n = 5;
+        int[] d = {2,3,5,2,4,3};
+        System.out.println(MatrixchainMultiplication(5, d));
+    }
+}
