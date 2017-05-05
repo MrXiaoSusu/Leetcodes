@@ -1,0 +1,42 @@
+import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
+import sun.reflect.generics.tree.Tree;
+
+import javax.swing.*;
+import java.time.temporal.Temporal;
+import java.util.*;
+
+/**
+ * Created by Andrew on 2017/5/4.
+ */
+public class test {
+
+    public static String KnapsackProblem(int m, int n, int[] s, int[] v, char[] name){
+
+        int[] B = new int[m+1];//B(i,c) 对于1-i个item放入c size中，最大的value。注意这里不用二维数组是为了节省开销因为对c<si的情况B(i,c)的记录是一直不会变的永远等于B(1,c)，每次迭代时变化的只是c>si的情况，所以一旦计算出来了就不会变了。
+        int[] L = new int[m+1];//L(j) is last item added for B(j)
+        for (int i = 1; i <= n; i++) {
+            for (int c = 1; c <= m; c++){
+                if (c >= s[i-1]){
+                    if (v[i-1] + B[c-s[i-1]] > B[c]) {
+                        B[c] = v[i-1] + B[c - s[i-1]];
+                        L[c] = i;
+                    }
+                }
+            }
+        }
+        StringBuilder sb = new StringBuilder();
+        while (L[m] > 0){
+            sb.append(name[L[m]-1]);
+            m = m - s[L[m]-1];
+        }
+        sb.reverse();
+        return sb.toString();
+    }
+    public static void main(String[] args) {
+        int n = 5;int m = 17;
+        int[] s = {3, 4, 7, 8, 9};
+        char[] name = {'A', 'B', 'C', 'D', 'E'};
+        int[] v = {4, 5, 10, 11, 12};
+        System.out.println(KnapsackProblem(m, n, s, v, name));
+    }
+}
