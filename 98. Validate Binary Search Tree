@@ -1,0 +1,53 @@
+import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
+import sun.reflect.generics.tree.Tree;
+
+import javax.swing.*;
+import java.time.temporal.Temporal;
+import java.util.*;
+
+/**
+ * Created by Andrew on 2017/5/4.
+ */
+public class test {
+
+    public static class TreeNode {
+        int val;
+        TreeNode left;
+        TreeNode right;
+        TreeNode(int x) { val = x; }
+    }
+
+    static TreeNode pre = null;
+
+    public static boolean isValidBST(TreeNode root){
+        pre = null;
+        return isValidBST_(root);
+    }
+    public static boolean isValidBST_(TreeNode root) {
+        if (root == null)
+            return true;
+        if(!isValidBST_(root.left))
+            return false;
+        if (pre != null && root.val <= pre.val)
+            return false;
+        pre = root; root = root.right;
+
+        return isValidBST_(root);
+    }
+
+    public static void main(String[] args) {
+        /*int n = 5;int m = 17;
+        int[] s = {3, 4, 7, 8, 9};
+        char[] name = {'A', 'B', 'C', 'D', 'E'};
+        int[] v = {4, 5, 10, 11, 12};
+        System.out.println(KnapsackProblem(m, n, s, v, name));*/
+        TreeNode treeNode = new TreeNode(0);
+
+       /* treeNode.right = new TreeNode(15);
+        treeNode.right.left = new TreeNode(13);
+
+        treeNode.right.right = new TreeNode(45);*/
+        System.out.println(isValidBST(treeNode));
+
+    }
+}
