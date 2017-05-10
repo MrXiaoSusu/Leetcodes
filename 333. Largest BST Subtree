@@ -1,0 +1,99 @@
+import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
+import sun.reflect.generics.tree.Tree;
+
+import javax.swing.*;
+import java.time.temporal.Temporal;
+import java.util.*;
+
+/**
+ * Created by Andrew on 2017/5/4.
+ */
+public class test {
+
+    public class Val{
+        boolean isValid = true;
+        int num = 0;
+        int min = Integer.MIN_VALUE;
+        int max = Integer.MAX_VALUE;
+    }
+
+    public Val countSubTree(TreeNode root){
+        Val val = new Val();
+        if (root == null) return val;
+        Val lval = countSubTree(root.left);
+        Val rval = countSubTree(root.right);
+
+        if (lval.isValid && rval.isValid){
+            if ((root.left == null || root.val > lval.max) && (root.right == null || root.val < rval.max)){
+                val.min = root.left == null? root.val:lval.min;
+                val.max = root.right == null? root.val:rval.max;
+                val.num = lval.num + rval.num + 1;
+                return val;
+            }
+        }
+        val.isValid = false;
+        val.num = Math.max(lval.num, rval.num);
+        return val;
+
+        /*if (root.left == null && root.right == null){
+            val.min = root.val;val.max = root.val;val.num++;
+            return val;
+        } else if (root.left != null && root.right == null){
+            Val lval = new Val();
+            lval = countSubTree(root.left);
+            if (lval.isValid && lval.max < root.val) {
+                val.isValid = true;val.min = lval.min;val.max = root.val;val.num = lval.num + 1;
+                return val;
+            }
+            val.isValid = false;val.num = lval.num;
+            return val;
+        } else if (root.left != null && root.right != null){
+            Val lval = new Val();
+            lval = countSubTree(root.left);
+            Val rval = new Val();
+            rval = countSubTree(root.right);
+            if (lval.isValid && rval.isValid && lval.max < root.val && rval.min > root.val){
+                val.isValid = true;val.min = lval.min;val.max = rval.max;val.num = lval.num + rval.num + 1;
+                return val;
+            }
+            val.isValid = false;val.num = Math.max(rval.num, lval.num);
+            return val;
+        }
+        //root.left == null && root.right != null;
+        Val rval = new Val();
+        rval = countSubTree(root.right);
+        if (rval.isValid && rval.min > root.val){
+            val.isValid = true;val.min = root.val;val.max = rval.max;val.num = rval.num + 1;
+            return val;
+        }
+        val.isValid = false;val.num = rval.num;
+        return val;*/
+    }
+    public int largestBSTSubtree(TreeNode root){
+        if (root == null)
+            return 0;
+        return countSubTree(root).num;
+    }
+
+    public static void main(String[] args) {
+
+        /*int n = 5;int m = 17;
+        int[] s = {3, 4, 7, 8, 9};
+        char[] name = {'A', 'B', 'C', 'D', 'E'};
+        int[] v = {4, 5, 10, 11, 12};
+        System.out.println(KnapsackProblem(m, n, s, v, name));*/
+        test t = new test();
+        TreeNode treeNode = new TreeNode(50);
+        treeNode.left = new TreeNode(30);
+        treeNode.right = new TreeNode(60);
+        treeNode.left.left = new TreeNode(5);
+        treeNode.left.right = new TreeNode(20);
+        treeNode.right.left = new TreeNode(45);
+        treeNode.right.right = new TreeNode(70);
+        treeNode.right.right.left = new TreeNode(65);
+        treeNode.right.right.right = new TreeNode(80);
+
+       System.out.println(t.largestBSTSubtree(treeNode));
+
+    }
+}
