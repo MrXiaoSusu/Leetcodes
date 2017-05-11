@@ -1,0 +1,55 @@
+import java.util.*;
+
+/**
+ * Created by Andrew on 2017/5/11.
+ */
+public class Solution {
+
+    List<List<Integer>> lists = new LinkedList<List<Integer>>();
+
+    public void pathSumBuilder(TreeNode root, int sum, Stack<Integer> path){
+        if (root == null)
+            return;
+        path.push(root.val);
+        if (root.left == null && root.right == null){
+            if (sum == root.val){
+                lists.add(new ArrayList<Integer>(path));//这里要注意必须是new List,不然添加的是空的。
+            }
+        }
+
+        pathSumBuilder(root.left, sum - root.val, path);
+        pathSumBuilder(root.right, sum - root.val, path);
+
+        path.pop();
+    }
+
+    public List<List<Integer>> pathSum(TreeNode root, int sum) {
+        if (root == null)
+            return lists;
+        Stack<Integer> path = new Stack<Integer>();
+        pathSumBuilder(root, sum, path);
+        return lists;
+    }
+
+    public static void main(String[] args) {
+
+        /*int n = 5;int m = 17;
+        int[] s = {3, 4, 7, 8, 9};
+        char[] name = {'A', 'B', 'C', 'D', 'E'};
+        int[] v = {4, 5, 10, 11, 12};
+        System.out.println(KnapsackProblem(m, n, s, v, name));*/
+        Solution s = new Solution();
+        TreeNode treeNode = new TreeNode(5);
+        treeNode.left = new TreeNode(4);
+        treeNode.right = new TreeNode(8);
+        treeNode.left.left = new TreeNode(11);
+        treeNode.left.left.left = new TreeNode(7);
+        treeNode.left.left.right = new TreeNode(2);
+        treeNode.right.left = new TreeNode(13);
+        treeNode.right.right = new TreeNode(4);
+        treeNode.right.right.right = new TreeNode(1);
+        treeNode.right.right.left = new TreeNode(5);
+
+        System.out.println(s.pathSum(treeNode, 22));
+    }
+}
