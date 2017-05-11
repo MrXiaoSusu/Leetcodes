@@ -1,0 +1,50 @@
+import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
+import sun.reflect.generics.tree.Tree;
+
+import javax.swing.*;
+import java.time.temporal.Temporal;
+import java.util.*;
+
+/**
+ * Created by Andrew on 2017/5/4.
+ */
+public class test {
+
+    static int max = Integer.MIN_VALUE;
+    public int CountPathSum(TreeNode root){
+        if (root == null) return 0;
+        int l = CountPathSum(root.left);
+        int r = CountPathSum(root.right);
+        if (l < 0) l = 0;
+        if (r < 0) r = 0;
+        max = Math.max(l + r + root.val, max);
+        return root.val += Math.max(l, r);
+    }
+    public int maxPathSum(TreeNode root){
+        max = Integer.MIN_VALUE;
+        CountPathSum(root);
+        return max;
+    }
+
+    public static void main(String[] args) {
+
+        /*int n = 5;int m = 17;
+        int[] s = {3, 4, 7, 8, 9};
+        char[] name = {'A', 'B', 'C', 'D', 'E'};
+        int[] v = {4, 5, 10, 11, 12};
+        System.out.println(KnapsackProblem(m, n, s, v, name));*/
+        test t = new test();
+        TreeNode treeNode = new TreeNode(50);
+        treeNode.left = new TreeNode(30);
+        treeNode.right = new TreeNode(60);
+        treeNode.left.left = new TreeNode(5);
+        treeNode.left.right = new TreeNode(20);
+        treeNode.right.left = new TreeNode(45);
+        treeNode.right.right = new TreeNode(70);
+        treeNode.right.right.left = new TreeNode(65);
+        treeNode.right.right.right = new TreeNode(80);
+
+       System.out.println(t.maxPathSum(treeNode));
+
+    }
+}
