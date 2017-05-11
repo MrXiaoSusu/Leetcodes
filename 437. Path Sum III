@@ -1,0 +1,46 @@
+import java.util.*;
+
+/**
+ * Created by Andrew on 2017/5/11.
+ */
+public class Solution {
+
+    public int pathSum_(TreeNode root, int sum){//以root为初始节点往下的路径
+        int result = 0;
+        if (root == null)
+            return result;
+
+        if (sum == root.val){
+            result++;
+        }
+        result += pathSum_(root.left,sum - root.val);
+        result += pathSum_(root.right,sum - root.val);
+        return result;
+
+
+    }
+    public int pathSum(TreeNode root, int sum) {
+        if (root == null)
+            return 0;
+        return pathSum_(root, sum) + pathSum(root.left, sum) + pathSum(root.right, sum);//以root、root.left、root.right为初始结点的路径。
+    }
+
+    public static void main(String[] args) {
+
+        /*int n = 5;int m = 17;
+        int[] s = {3, 4, 7, 8, 9};
+        char[] name = {'A', 'B', 'C', 'D', 'E'};
+        int[] v = {4, 5, 10, 11, 12};
+        System.out.println(KnapsackProblem(m, n, s, v, name));*/
+        Solution s = new Solution();
+        TreeNode treeNode = new TreeNode(1);
+        treeNode.left = new TreeNode(-2);
+        treeNode.left.left = new TreeNode(1);
+        treeNode.left.right = new TreeNode(3);
+        treeNode.left.left.left = new TreeNode(-1);
+        treeNode.right = new TreeNode(-3);
+        treeNode.right.left = new TreeNode(-2);
+
+        System.out.println(s.pathSum(treeNode, 3));
+    }
+}
