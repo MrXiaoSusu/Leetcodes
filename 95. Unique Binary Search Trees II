@@ -1,104 +1,49 @@
+import sun.reflect.generics.tree.Tree;
+
 import java.util.*;
 
 /**
- * Created by Andrew on 2017/4/3.
+ * Created by Andrew on 2017/5/11.
  */
-public class test {
+public class Solution {
 
-    public static class TreeNode {
-      int val;
-     TreeNode left;
-     TreeNode right;
-     TreeNode(int x) { val = x; }
-    }
-
-    public static TreeNode CopyTree(TreeNode treenode, int n){
-        if (treenode == null)
-            return null;
-        TreeNode newtree = new TreeNode(-1);
-        newtree.left = CopyTree(treenode.left, n);
-        if (newtree.left == null)
-            newtree.val = n;
-        else{
-            TreeNode t = newtree.left;
-            while(t.right != null){
-                t = t.right;
-            }
-            newtree.val = t.val + 1;
-        }
-        newtree.right = CopyTree(treenode.right, newtree.val + 1);
-        return newtree;
-    }
-
-    public static List<TreeNode> generateTrees(int n) {
-        List<List<TreeNode>> list = new LinkedList<List<TreeNode>>();
-        List<TreeNode> li = new LinkedList<TreeNode>();
-        li.add(null);
+    public List<TreeNode> generateTrees(int n) {
+        List<TreeNode>[] list = new List[n+1];
+        list[0] = new LinkedList<TreeNode>();
         if (n == 0)
-            return li;
-        int[] s = new int[n+1];
-        s[0] = 1;
-        if (n == 0)
-            return null;
-        int sum = 0;
-        for (int j = 1; j <= n; j++) {
-            sum = 0;
-            for (int i = 1; i <= j; i++) {
-                sum += s[i-1]*s[j-i];
-            }
-            s[j] = sum;
-        }
-
-        list.add(li);
-        for (int j = 1; j <= n; j++) {
-            List<TreeNode> temp = new LinkedList<TreeNode>();
-            for (int i = 1; i <= j; i++) {
-
-                for (int k = 0; k < s[i-1]; k++) {
-                    for (int l = 0; l < s[j-i]; l++) {
-
-                        TreeNode treeNode = new TreeNode(i);
-                        treeNode.left = list.get(i-1).get(k);
-                        treeNode.right = list.get(j-i).get(l);
-                        temp.add(treeNode);
+            return list[0];
+        list[0].add(null);
+        for (int step = 1; step <= n; step++) {
+            list[step] = new LinkedList<TreeNode>();
+            for (int root = 1; root <= step; root++) {
+                for (TreeNode tempL : list[root-1]) {
+                    for (TreeNode tempR : list[step - root]) {
+                        TreeNode treeNode = new TreeNode(root);
+                        treeNode.left = tempL;
+                        treeNode.right = clone(tempR, root);
+                        list[step].add(treeNode);
                     }
                 }
-
             }
-            list.add(temp);
         }
-
-
-       /* for (int i = 0; i < list.get(n).size(); i++) { 制造新的树
-            TreeNode treeNode = list.get(n).get(i);
-            int num = 1;
-            if(treeNode==null)continue;
-            Stack<TreeNode> stack=new Stack<TreeNode>();
-            while(treeNode!=null||!stack.isEmpty()){
-                while(treeNode!=null){
-                    stack.push(treeNode);//先访问再入栈
-                    treeNode=treeNode.left;
-                }
-                treeNode=stack.pop();
-                treeNode.val = num++;
-                treeNode=treeNode.right;//如果是null，出栈并处理右子树
-            }
-        }*/
-       List<TreeNode> finallist = new LinkedList<TreeNode>();
-        for (int i = 0; i < list.get(n).size(); i++){
-            finallist.add(CopyTree(list.get(n).get(i), 1));
-        }
-        return finallist;
+        return list[n];
+    }
+    public TreeNode clone(TreeNode treeNode, int offset){
+        if (treeNode == null)
+            return null;
+        TreeNode t = new TreeNode(treeNode.val + offset);
+        t.left = clone(treeNode.left, offset);
+        t.right = clone(treeNode.right, offset);
+        return t;
     }
 
-
     public static void main(String[] args) {
+
+        Solution solution = new Solution();
         int n = 0;
         Scanner scanner = new Scanner(System.in);
-        while(true){
-            n = scanner.nextInt();
-            System.out.println(generateTrees(n));
+        while((n = scanner.nextInt()) != -1){
+            System.out.println();
         }
-
     }
 }
