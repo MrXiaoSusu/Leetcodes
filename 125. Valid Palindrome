@@ -1,0 +1,43 @@
+#include <iostream>
+#include <algorithm>
+
+using namespace std;
+
+/*struct TreeNode {
+	int val;
+	TreeNode *left;
+	TreeNode *right;
+	TreeNode() {}
+	TreeNode(int _val) { val = _val;  left = NULL; right = NULL; }
+};*/
+
+class Solution {
+	public:
+		bool isPalindrome(string s) {
+			// Write your code here
+			transform(s.begin(), s.end(), s.begin(), ::tolower);
+			int former = 0; int latter = s.length() - 1;
+			while (former < latter) {
+				if (!isalnum(s[former])) {
+					former++; continue;
+				}
+				if (!isalnum(s[latter])) {
+					latter--; continue;
+				}
+
+				if (s[former] != s[latter])
+					break;
+				former++; latter--;
+			}
+			if (former < latter)
+				return false;
+			return true;
+		}
+};
+void main() {
+	printf("Hello Word!\n");
+	
+	string s = "0P";
+	Solution *solution = new Solution();
+	cout << solution->isPalindrome(s) << endl;
+}
