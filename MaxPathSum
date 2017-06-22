@@ -1,0 +1,53 @@
+#include <iostream>
+#include <algorithm>
+
+using namespace std;
+
+struct TreeNode {
+	int val;
+	TreeNode *left;
+	TreeNode *right;
+	TreeNode() {}
+	TreeNode(int _val) { val = _val;  left = NULL; right = NULL; }
+};
+
+class Solution {
+	public:
+		int maxPathSum(TreeNode* root) {
+			if (!root)
+				return 0;
+			int result = INT_MIN;
+			_maxPathSum(root, result);
+			return result;
+		}
+
+		int _maxPathSum(TreeNode* treenode, int &maxsum) {
+			if (!treenode) {
+				return 0;
+			}
+			int sumL = _maxPathSum(treenode->left, maxsum);
+			int sumR = _maxPathSum(treenode->right, maxsum);
+			int sum = sumL + sumR + treenode->val;
+			maxsum = max(max(max(sum, maxsum), treenode->val), max(sumL, sumR)+treenode->val);
+
+			return max(treenode->val, max(sumL, sumR) + treenode->val);
+		}
+};
+void main() {
+	printf("Hello Word!\n");
+	TreeNode *p1 = new TreeNode(-10);
+	TreeNode *p2 = new TreeNode(-20);
+	TreeNode *p3 = new TreeNode(3);
+	TreeNode *p4 = new TreeNode(-4);
+	TreeNode *p5 = new TreeNode(0);
+	TreeNode *p6 = new TreeNode(5);
+	TreeNode *p7 = new TreeNode(-1);
+	p1->left = p2;
+	p1->right = p3;
+	p2->left = p4;
+	p2->right = p5;
+	p3->left = p6;
+	p3->right = p7;
+	Solution *solution = new Solution();
+	cout << solution->maxPathSum(p1) << endl;
+}
