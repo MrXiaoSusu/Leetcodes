@@ -1,0 +1,114 @@
+#include <iostream>
+#include <algorithm>
+#include <vector>
+
+using namespace std;
+
+/*struct TreeNode {
+	int val;
+	TreeNode *left;
+	TreeNode *right;
+	TreeNode() {}
+	TreeNode(int _val) { val = _val;  left = NULL; right = NULL; }
+};*/
+
+class Solution {
+	public:
+		bool isPalindrome(string s) {
+			if (s.empty())
+				return true;
+			unsigned int begin = 0, end = s.length() - 1;
+			while (begin < end) {
+				if (s[begin++] != s[end--])
+					return false;
+			}
+			return true;
+		}
+		void _partition(unsigned int index, string s, vector<string> &vec, vector<vector<string>> &result) {
+			if (index == s.length()) {
+				result.push_back(vec);
+				return;
+			}
+			for (unsigned int i = index; i < s.length(); i++) {
+				if (isPalindrome(s.substr(index, i - index + 1))) {
+					vec.push_back(s.substr(index, i - index + 1));
+					_partition(i + 1, s, vec, result);
+					vec.pop_back();
+				}
+			}
+		}
+		vector<vector<string>> partition(string s) {
+			vector<vector<string>> result;
+			if (s.empty())
+				return result;
+			vector<string> vec;
+			_partition(0, s, vec, result);
+			return result;
+		}
+};
+void main() {
+	printf("Hello Word!\n");
+	
+	string s = "aabb";
+	Solution *solution = new Solution();
+	solution->partition(s);
+}
+
+
+import sun.reflect.generics.tree.Tree;
+
+import java.util.*;
+
+/**
+ * Created by Andrew on 2017/5/11.
+ */
+public class Solution {
+
+    public boolean isParlindrome(String s) {
+        if (s == null)
+            return true;
+        int begin = 0, end = s.length()-1;
+        while (begin < end) {
+            if (s.charAt(begin) != s.charAt(end))
+                return false;
+            begin++;end--;
+        }
+        return true;
+    }
+    public List<List<String>> partition(String s) {
+        List<List<String>> result = new ArrayList<List<String>>();
+        if (s == null)
+            return result;
+        List<String> list = new ArrayList<String>();
+        _partition(0, s, list, result);
+        return result;
+    }
+
+    public void _partition(int index, String s, List list, List<List<String>> result) {
+        if (index == s.length()) {
+            result.add(new ArrayList<>(list));
+            return ;
+        }
+        for (int i = index; i < s.length(); i++) {
+            if (isParlindrome(s.substring(index, i+1))) {
+                list.add(s.substring(index, i+1));
+                _partition(i+1, s, list, result);
+                list.remove(list.size()-1);
+            }
+        }
+    }
+
+
+    public static void main(String[] args) {
+
+        Solution solution = new Solution();
+        int n = 0;
+        Scanner scanner = new Scanner(System.in);
+        /*while((n = scanner.nextInt()) != -1){
+            System.out.println();
+        }*/
+        String s = "aa";
+        solution.partition(s);
+
+    }
+}
