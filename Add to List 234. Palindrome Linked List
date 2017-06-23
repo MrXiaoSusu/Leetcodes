@@ -1,0 +1,58 @@
+#include <iostream>
+#include <algorithm>
+#include <vector>
+
+using namespace std;
+
+/*struct TreeNode {
+	int val;
+	TreeNode *left;
+	TreeNode *right;
+	TreeNode() {}
+	TreeNode(int _val) { val = _val;  left = NULL; right = NULL; }
+};*/
+struct ListNode {
+	int val;
+	ListNode *next;
+	ListNode(int x) : val(x), next(NULL) {}
+};
+class Solution {
+	public:
+		bool isPalindrome(ListNode* head) {
+			if (!head)
+				return true;
+			ListNode *next = head, *fast = head, *slow = head, *pre = NULL;
+			while (fast && fast->next) {//order is critical 
+				slow = slow->next;
+				fast = fast->next->next;
+			}
+			if (fast)//odd
+				slow = slow->next;
+			//reverse slow
+			pre = NULL;
+			while (slow) {
+				next = slow->next;
+				slow->next = pre;
+				pre = slow;
+				slow = next;
+			}
+			while (pre) {
+				if (head->val != pre->val)
+					return false;
+				head = head->next;
+				pre = pre->next;
+			}
+			return true;
+		}		
+};
+void main() {
+	printf("Hello Word!\n");
+	
+	//string s = "abbab";
+	Solution *solution = new Solution();
+	ListNode *l1 = new ListNode(5);
+	ListNode *l2 = new ListNode(4);
+	ListNode *l3 = new ListNode(3);
+	l1->next = l2; l2->next = l3; 
+	cout << solution->isPalindrome(l1) <<endl;
+}
