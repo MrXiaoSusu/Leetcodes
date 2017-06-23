@@ -1,0 +1,57 @@
+#include <iostream>
+#include <algorithm>
+#include <vector>
+
+using namespace std;
+
+/*struct TreeNode {
+	int val;
+	TreeNode *left;
+	TreeNode *right;
+	TreeNode() {}
+	TreeNode(int _val) { val = _val;  left = NULL; right = NULL; }
+};*/
+
+class Solution {
+	public:
+		void isPalindrome(vector<vector<int> > &p, string s) {
+			for (unsigned int len = 0; len < s.length(); len++) {
+				for (unsigned int i = 0; i < s.length() - len; i++) {
+					unsigned int j = i + len;
+					if (s[i] == s[j]) {
+						if (i == j || i == j-1)
+							p[i][j] = 1;
+						else 
+							p[i][j] = p[i + 1][j - 1];
+						}
+					else p[i][j] = 0;
+				}
+			}
+		}
+		
+		int minCut(string s) {
+			vector<vector<int> >p(s.length(), vector<int>(s.length()));
+			isPalindrome(p, s);
+			vector<int> c(s.length());
+			for (unsigned int i = 0; i < s.length(); i++) {
+				if (p[0][i] == 1)
+					c[i] = 0;
+				else {
+					int temp = INT_MAX;
+					for (unsigned int k = i; k > 0; k--) {
+						if (p[k][i] == 1)
+							temp = min(temp, c[k - 1] + 1);
+					}
+					c[i] = temp;
+				}
+			}
+			return c[s.length()-1];
+		}
+};
+void main() {
+	printf("Hello Word!\n");
+	
+	string s = "abbab";
+	Solution *solution = new Solution();
+	cout << solution->minCut(s) <<endl;
+}
