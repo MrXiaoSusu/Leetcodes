@@ -1,0 +1,79 @@
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+/*struct TreeNode {
+	int val;
+	TreeNode *left;
+	TreeNode *right;
+	TreeNode() {}
+	TreeNode(int _val) { val = _val;  left = NULL; right = NULL; }
+};
+struct ListNode {
+	int val;
+	ListNode *next;
+	ListNode(int x) : val(x), next(NULL) {}
+};*/
+class Solution {
+	public:
+		bool isPalindrome(string s) {
+			if (s.empty())
+				return true;
+			unsigned int begin = 0, end = s.length() - 1;
+			while (begin < end) {
+				if (s[begin++] != s[end--])
+					return false;
+			}
+			return true;
+		}
+
+		string _shortestPalindrome(string s) {
+			if (s.empty())
+				return s;
+			if (isPalindrome(s))
+				return s;
+			int index = -1;
+			for (int i = s.length(); i > 0; i--) {
+				if (isPalindrome(s.substr(0, i))) {
+					index = i;
+					break;
+				}
+			}
+			string result = s;
+			while (index < s.length()) {
+				result = s[index++] + result;
+			};
+			return result;
+		}
+		string shortestPalindrome(string s) {
+			if (s.empty())
+				return s;
+			string res = s;
+			::reverse(res.begin(), res.end());
+			string l = s + "#" +res;
+			vector<int> p(l.length(), 0);//max num of prefix = surfix  abab p=2;
+			for (int i = 1; i < l.length(); i++) {
+				int k = p[i-1];
+				while (k > 0 && l[k] != l[i]) {
+					k = p[k-1];
+				}
+				p[i] = k + (l[k] == l[i]);
+			}
+			return res.substr(0, res.length() - p[l.length()-1]) + s;
+		}
+
+};
+void main() {
+	printf("Hello Word!\n");
+	
+	string s = "abcd";
+	Solution *solution = new Solution();
+	/*ListNode *l1 = new ListNode(5);
+	ListNode *l2 = new ListNode(4);
+	ListNode *l3 = new ListNode(3);
+	l1->next = l2; l2->next = l3; */
+	cout << solution->shortestPalindrome(s) <<endl;
+}
