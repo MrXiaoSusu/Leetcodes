@@ -1,0 +1,44 @@
+#include <iostream>
+#include <algorithm>
+#include <vector>
+
+using namespace std;
+
+/*struct TreeNode {
+	int val;
+	TreeNode *left;
+	TreeNode *right;
+	TreeNode() {}
+	TreeNode(int _val) { val = _val;  left = NULL; right = NULL; }
+};*/
+struct ListNode {
+	int val;
+	ListNode *next;
+	ListNode(int x) : val(x), next(NULL) {}
+};
+class Solution {
+	public:
+		ListNode* reverseList(ListNode* head) {
+			if (!head)
+				return head;
+			ListNode *pre = NULL, *next = NULL;
+			while (head) {
+				next = head->next;
+				head->next = pre;
+				pre = head;
+				head = next;
+			}
+			return pre;
+		}
+};
+void main() {
+	printf("Hello Word!\n");
+	
+	//string s = "abbab";
+	Solution *solution = new Solution();
+	ListNode *l1 = new ListNode(5);
+	ListNode *l2 = new ListNode(4);
+	ListNode *l3 = new ListNode(3);
+	l1->next = l2; l2->next = l3; 
+	cout << solution->reverseList(l1) <<endl;
+}
