@@ -1,0 +1,76 @@
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+/*struct TreeNode {
+	int val;
+	TreeNode *left;
+	TreeNode *right;
+	TreeNode() {}
+	TreeNode(int _val) { val = _val;  left = NULL; right = NULL; }
+};
+struct ListNode {
+	int val;
+	ListNode *next;
+	ListNode(int x) : val(x), next(NULL) {}
+};*/
+class Solution {
+	public:
+		int Manacher(string s) {
+			int mx = 0, id = 0;
+			char* l = new char[2 * s.length() + 3];
+			l[0] = '$';
+			l[1] = '#';
+			for (int i = 0; i < s.length(); i++) {
+				l[2*i + 2] = s[i];
+				l[2 * i + 3] = '#';
+			}
+			l[2 * s.length() + 2] = '\0';
+
+			vector<int> p(2 * s.length() + 3, 0);
+			for (int i = 1; l[i] != '\0'; i++) {
+				p[i] = mx > i ? min(mx-i, p[2*id-i]): 1;
+				while (l[i - p[i]] == l[i + p[i]])
+					p[i]++;
+				if (i + p[i] > mx) {
+					mx = i + p[i];
+					id = i;
+				}
+			}
+			mx = 0; id = 0;
+			for (int i = 1; l[i] != '\0'; i++) {
+				if (p[i] > mx - id) {
+					id = i;
+					mx = i + p[i];
+				}
+			}
+			if ((mx - id) % 2 == 0) {
+				for (int i = id / 2 - 1 - (mx - id - 1) / 2; i <= id / 2 - 1 + (mx - id - 1) / 2; i++) {
+					cout << s[i];
+				}
+			}
+			else {
+				for (int i = id / 2 - (mx - id - 1) / 2; i <= id / 2 - 1 + (mx - id - 1) / 2; i++) {
+					cout << s[i];
+				}
+			}
+			
+			cout << endl;
+			return mx - id - 1;
+		}
+};
+void main() {
+	printf("Hello Word!\n");
+	
+	string s = "AAAA";
+	string p = "ABCDABD";
+	Solution *solution = new Solution();
+	/*ListNode *l1 = new ListNode(5);
+	ListNode *l2 = new ListNode(4);
+	ListNode *l3 = new ListNode(3);
+	l1->next = l2; l2->next = l3; */
+	cout << solution->Manacher(s) <<endl;
+}
