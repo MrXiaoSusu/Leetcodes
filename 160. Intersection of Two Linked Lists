@@ -1,0 +1,45 @@
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <string>
+#include <unordered_map>
+#include <unordered_set>
+
+using namespace std;
+
+struct TreeNode {
+	int val;
+	TreeNode *left;
+	TreeNode *right;
+	TreeNode() {}
+	TreeNode(int _val) { val = _val;  left = NULL; right = NULL; }
+};
+struct ListNode {
+	int val;
+	ListNode *next;
+	ListNode(int x) : val(x), next(NULL) {}
+};
+class Solution {
+	public:
+		ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+			ListNode* cur1 = headA,* cur2 = headB;
+			while (cur1 != cur2) {
+				cur1 = cur1 ? cur1->next : headB;
+				cur2 = cur2 ? cur2->next : headA;
+			}
+			return cur1;
+		}
+};
+void main() {
+	printf("Hello Word!\n");
+	
+	string s = "abccccdd";
+	string p = "ABCDABD";
+	vector<string> ss = { "a", ""};
+	Solution *solution = new Solution();
+	/*ListNode *l1 = new ListNode(5);
+	ListNode *l2 = new ListNode(4);
+	ListNode *l3 = new ListNode(3);
+	l1->next = l2; l2->next = l3; */
+
+}
