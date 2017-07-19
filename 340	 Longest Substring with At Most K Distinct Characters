@@ -1,0 +1,62 @@
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <string>
+#include <unordered_map>
+#include <unordered_set>
+#include <queue>
+#include <set>
+
+using namespace std;
+
+struct TreeNode {
+	int val;
+	TreeNode *left;
+	TreeNode *right;
+	TreeNode() {}
+	TreeNode(int _val) { val = _val;  left = NULL; right = NULL; }
+};
+struct ListNode {
+	int val;
+	ListNode *next;
+	ListNode(int x) : val(x), next(NULL) {}
+};
+class Solution {
+public :
+
+	int longestSubstring(string s, int k) {
+		if (s.length() < k)
+			return 0;
+		int left = 0, right = 0, res = 0;
+		int size = s.length();
+		unordered_map<char, int> map;
+		for (right = 0; right < size; right++) {
+			map[s[right]] = right;
+			while (map.size() > k) {
+				if (map[s[left]] == left)//single or end of muti character abbc   babac
+					map.erase(s[left]);
+				left++;
+			}
+
+			res = max(res, right - left + 1);
+		}
+		return res;
+	}
+	
+};
+void main() {
+	printf("Hello Word!\n");
+	
+	string s = "eceba";
+	string p = "ABCDABD";
+	vector<string> ss = { "a", ""};
+	Solution *solution = new Solution();
+	/*ListNode *l1 = new ListNode(5);
+	ListNode *l2 = new ListNode(4);
+	ListNode *l3 = new ListNode(3);
+	l1->next = l2; l2->next = l3; */
+	vector<int> nums1 = {1,2,2,1};
+	vector<int> nums2 = {2,2};
+	cout << solution->longestSubstring(s, 2) << endl;
+	
+}
