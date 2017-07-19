@@ -1,0 +1,76 @@
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <string>
+#include <unordered_map>
+#include <unordered_set>
+
+using namespace std;
+
+struct TreeNode {
+	int val;
+	TreeNode *left;
+	TreeNode *right;
+	TreeNode() {}
+	TreeNode(int _val) { val = _val;  left = NULL; right = NULL; }
+};
+struct ListNode {
+	int val;
+	ListNode *next;
+	ListNode(int x) : val(x), next(NULL) {}
+};
+class Solution {
+	public:
+		vector<pair<int, int>> pacificAtlantic(vector<vector<int>>& matrix) {
+			vector<pair<int, int>> result;
+			if ( matrix.size() == 0 || matrix[0].size() == 0)
+				return result;
+			vector<vector<bool>> pacific(matrix.size(), vector<bool>(matrix[0].size(), false));
+			vector<vector<bool>> atlantic(matrix.size(), vector<bool>(matrix[0].size(), false));
+			for (int i = 0; i < matrix.size(); i++) {
+				dfs(pacific, matrix, pair<int, int>(i, 0));
+				dfs(atlantic, matrix, pair<int, int>(i, matrix[0].size() - 1));
+			}
+			for (int i = 0; i < matrix[0].size(); i++) {
+				dfs(pacific, matrix, pair<int, int>(0, i));
+				dfs(atlantic, matrix, pair<int, int>(matrix.size() - 1, i));
+			}
+			for (int i = 0; i < matrix.size(); i++)
+				for (int j = 0; j < matrix[0].size(); j++) {
+					if (pacific[i][j] && atlantic[i][j])
+						result.push_back(pair<int, int>(i, j));
+				}
+				
+			return result;
+		}
+		void dfs(vector<vector<bool>> &visit, vector<vector<int>>& matrix, pair<int,int> p) {
+			if (visit[p.first][p.second])
+				return;
+			visit[p.first][p.second] = true;
+			if ((p.first > 0) && (matrix[p.first][p.second] <= matrix[p.first-1][p.second]))
+				dfs(visit, matrix, pair<int,int>(p.first - 1, p.second));
+			if ((p.first < matrix.size()-1) && (matrix[p.first][p.second] <= matrix[p.first + 1][p.second]))
+				dfs(visit, matrix, pair<int, int>(p.first + 1, p.second));
+			if ((p.second > 0) && matrix[p.first][p.second] <= matrix[p.first][p.second - 1])
+				dfs(visit, matrix, pair<int, int>(p.first, p.second - 1));
+			if ((p.second < matrix[0].size() - 1) && matrix[p.first][p.second] <= matrix[p.first][p.second + 1])
+				dfs(visit, matrix, pair<int, int>(p.first, p.second + 1));
+		}
+};
+void main() {
+	printf("Hello Word!\n");
+	
+	string s = "abccccdd";
+	string p = "ABCDABD";
+	vector<string> ss = { "a", ""};
+	Solution *solution = new Solution();
+	/*ListNode *l1 = new ListNode(5);
+	ListNode *l2 = new ListNode(4);
+	ListNode *l3 = new ListNode(3);
+	l1->next = l2; l2->next = l3; */
+	vector<vector<int>> matrix;
+	matrix.push_back(vector<int>(2, 1));
+	matrix.push_back(vector<int>(2, 1));
+	matrix.push_back(vector<int>(2, 1));
+	solution->pacificAtlantic(matrix);
+}
