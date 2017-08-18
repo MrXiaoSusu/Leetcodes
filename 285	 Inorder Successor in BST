@@ -1,0 +1,57 @@
+import sun.reflect.generics.tree.Tree;
+
+import java.util.*;
+
+/**
+ * Created by Andrew on 2017/5/11.
+ */
+public class Solution {
+    public TreeNode pre = null;
+    public TreeNode res;
+    void DFS(TreeNode root, TreeNode p) {
+        if (root == null)
+            return;
+        DFS(root.left, p);
+        if (pre != null && pre == p) {
+            res = root;
+        }
+        pre = root;
+        DFS(root.right, p);
+    }
+    public TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
+        res = null;
+        DFS(root, p);
+        return res;
+    }
+    public TreeNode inorderSuccessor_(TreeNode root, TreeNode p) {
+        if (root == null || p == null)
+            return null;
+        //TreeNode res = null;
+        TreeNode succ = null;
+        while (root != null) {
+            if (p.val < root.val) {
+                succ = root;
+                root = root.left;
+            } else if(p.val > root.val)
+                root = root.right;
+        }
+        return succ;
+    }
+    public static void main(String[] args) {
+
+        Solution solution = new Solution();
+        int n = 0;
+        Scanner scanner = new Scanner(System.in);
+        /*while((n = scanner.nextInt()) != -1){
+            System.out.println();
+        }*/
+        //{1,2,2,3,5},{3,2,3,4,4},{2,4,5,3,1},{6,7,1,4,5},{5,1,1,2,4}
+        String s = "aa";
+        int[][] matrix = {{1,2},{4,3}};
+        TreeNode t = new TreeNode(3);
+        t.left = new TreeNode(1);
+        t.left.right = new TreeNode(2);
+        TreeNode p = t.left.right;
+        System.out.println(solution.inorderSuccessor(t, p).val);
+    }
+}
