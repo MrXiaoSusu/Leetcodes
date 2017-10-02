@@ -1,0 +1,20 @@
+public UndirectedGraphNode cloneGraph(UndirectedGraphNode node) {
+        if (node == null)
+            return null;
+        HashMap<Integer, UndirectedGraphNode> map = new HashMap<>();
+        UndirectedGraphNode res = new UndirectedGraphNode(node.label);
+        map.put(node.label, res);
+        Queue<UndirectedGraphNode> queue = new LinkedList<>();
+        queue.add(node);
+        while (!queue.isEmpty()) {
+            UndirectedGraphNode tmpnode = queue.remove();
+            for (UndirectedGraphNode nnode : tmpnode.neighbors){
+                if (!map.containsKey(nnode.label)) {
+                    queue.add(nnode);
+                    map.put(nnode.label, new UndirectedGraphNode(nnode.label));
+                }
+                map.get(tmpnode.label).neighbors.add(map.get(nnode.label));
+            }
+        }
+        return res;
+    }
