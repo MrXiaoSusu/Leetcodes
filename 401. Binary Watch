@@ -1,0 +1,52 @@
+public Set<Integer> hour = new HashSet<>();
+    public Set<Integer> minute = new HashSet<>();
+    public List<String> readBinaryWatch(int num) {
+        List<String> res = new LinkedList<>();
+        HashMap<Integer, Set<Integer>> hCa = new HashMap<>();
+        HashMap<Integer, Set<Integer>> mCa = new HashMap<>();
+        if (num < 0 || num > 8)
+            return res;
+        if (num == 0) {
+            res.add("0:00");
+            return res;
+        }
+        hour.add(1);hour.add(2);hour.add(4);hour.add(8);
+        minute.add(1);minute.add(2);minute.add(4);minute.add(8);minute.add(16);minute.add(32);
+
+
+        for (int i = 0 ; i < 4; i++) {
+            Set<Integer> h = new HashSet<>();
+            backtrack(h, new HashSet<>(), hour, i, 0, 11);
+            hCa.put(i, h);
+            Set<Integer> m = new HashSet<>();
+            backtrack(m, new HashSet<>(), minute, num-i, 0, 59);
+            mCa.put(num-i, m);
+        }
+
+        for (int i = 0 ; i < 4; i++) {
+            for (Integer hh : hCa.get(i))
+                for (Integer mm : mCa.get(num-i)) {
+                    String hhh = Integer.toString(hh);
+                    String mmm = Integer.toString(mm);
+                    if (mm < 10)
+                        mmm = "0" + mmm;
+                    res.add(new String(hhh+":"+mmm));
+                }
+        }
+
+        return res;
+    }
+    public void backtrack(Set<Integer> res, Set<Integer> s, Set<Integer> S, int curNum, int num, int c) {
+        if (curNum == 0) {
+            res.add(num);
+            return;
+        }
+        for (int ss : S) {
+            if (!s.contains(ss) && ss + num <= c) {
+                s.add(ss);
+                backtrack(res, s, S, curNum - 1, num + ss, c);
+                s.remove(ss);
+            }
+        }
+        return ;
+    }
