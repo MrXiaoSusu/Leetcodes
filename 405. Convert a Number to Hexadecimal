@@ -1,0 +1,17 @@
+StringBuilder sb = new StringBuilder();
+        char[] ch = {'a','b','c','d','e','f'};
+        boolean pos = (num > 0);
+        if (num == 0)
+            return "0";
+        while (num != 0){
+            if ((num & 15) < 10)
+                sb.append(num & 15);
+            else
+                sb.append(ch[(num&15)-10]);
+            num >>>= 4;
+        }
+        sb.reverse();
+        if (pos)
+            return sb.toString();
+
+        return sb.toString();
