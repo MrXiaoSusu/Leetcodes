@@ -1,0 +1,27 @@
+if (k == 0)
+            return num;
+        if (num == null || k == num.length())
+            return "0";
+        char[] res = num.toCharArray();
+        int n = 0;
+        Stack<Character> stack = new Stack<>();
+        for (int i = 0; i < num.length(); i++) {
+            if (i == 0) {
+                stack.push(res[i]);
+                continue;
+            }
+            while (!stack.isEmpty() && n < k && stack.peek() > res[i]) {
+                stack.pop();
+                n++;
+            }
+            stack.push(res[i]);
+        }
+        while (n++ < k)
+            stack.pop();
+        StringBuilder sb = new StringBuilder();
+        while (!stack.isEmpty())
+            sb.append(stack.pop());
+        sb.reverse();
+        while (sb.length() > 1 && sb.charAt(0) == '0')
+            sb = sb.deleteCharAt(0);
+        return sb.toString();
