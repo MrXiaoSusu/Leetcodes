@@ -1,0 +1,21 @@
+ public boolean validWordAbbreviation(String word, String abbr) {
+        if (word == null || abbr == null)
+            return false;
+        int i = 0, j = 0, m = word.length(), n = abbr.length();
+        while (i < m && j < n) {
+            if (abbr.charAt(j) >= '0' && abbr.charAt(j) <= '9') {//digit
+                if (abbr.charAt(j) == '0')
+                    return false;
+                int k = j;
+                while (++k < n && Character.isDigit(abbr.charAt(k)) ) {
+                }
+                int num = Integer.parseInt(abbr.substring(j, k));
+                i += num;
+                j = k;
+            }else
+                if (abbr.charAt(j++) != word.charAt(i++))
+                    return false;
+
+        }
+        return (i == m && j == n);
+    }
