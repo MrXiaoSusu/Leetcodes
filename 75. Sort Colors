@@ -1,0 +1,16 @@
+int i = 0, indexred = 0, indexblue = nums.length - 1;
+        if (nums == null || nums.length == 0)
+            return ;
+        while (i <= indexblue) {
+            if (nums[i] == 0) {
+                nums[i] = nums[indexred];
+                nums[indexred] = 0;
+                indexred++;
+            } else if (nums[i] == 2) {
+                nums[i] = nums[indexblue];
+                nums[indexblue] = 2;
+                indexblue--;
+                i--;
+            }
+            i++;
+        }
