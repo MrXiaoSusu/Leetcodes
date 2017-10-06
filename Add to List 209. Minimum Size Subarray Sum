@@ -1,0 +1,16 @@
+public int minSubArrayLen(int s, int[] nums) {
+        int res = nums.length + 1;
+        if (nums == null || nums.length == 0)
+            return 0;
+        int left = 0, right = 0, sum = 0;
+        while (right < nums.length) {
+            sum += nums[right];
+            if (sum >= s) {
+                res = Math.min(res, right - left + 1);
+                sum = sum - nums[left] - nums[right];
+                left++;
+            }else
+                right++;
+        }
+        return (res < nums.length + 1? res : 0);
+    }
