@@ -1,0 +1,52 @@
+ // Encodes a tree to a single string.
+    public String serialize(TreeNode root) {
+        StringBuilder res = new StringBuilder();//#1#2#3#4#*#*
+        if (root == null)
+            return null;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        while (!queue.isEmpty()) {
+            TreeNode t = queue.poll();
+            if (t == null) {
+                res.append("#*");
+                continue;
+            }
+            res.append("#" + String.valueOf(t.val));
+            queue.add(t.left);
+            queue.add(t.right);
+        }
+        return res.toString();
+    }
+
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+        if (data == null)
+            return null;
+        Queue<TreeNode> queue = new LinkedList<>();
+        int begin = 1, end = 1;
+        while (data.charAt(end) != '#')
+            end++;
+        TreeNode root = new TreeNode(Integer.valueOf(data.substring(begin, end)));
+        queue.add(root);
+        
+        while (end < data.length()) {
+            begin = end + 1;
+            end = begin;
+            TreeNode t = queue.poll();
+            while (end < data.length() && data.charAt(end) != '#')
+                end++;
+            if (!data.substring(begin, end).equals("*")) {
+                t.left = new TreeNode(Integer.valueOf(data.substring(begin, end)));
+                queue.add(t.left);
+            }
+            begin = end + 1;
+            end = begin;
+            while (end < data.length() && data.charAt(end) != '#')
+                end++;
+            if (!data.substring(begin, end).equals("*")) {
+                t.right = new TreeNode(Integer.valueOf(data.substring(begin, end)));
+                queue.add(t.right);
+            }
+        }
+        return root;
+    }
