@@ -1,0 +1,17 @@
+public int minMeetingRooms(Interval[] intervals) {
+        if (intervals.length == 0)
+            return 0;
+        Arrays.sort(intervals, new Comparator<Interval>() {
+            @Override
+            public int compare(Interval o1, Interval o2){
+                return o1.start - o2.start;
+            }
+        });
+        PriorityQueue<Integer> heap = new PriorityQueue<Integer>();
+        for (Interval interval : intervals) {
+            if (!heap.isEmpty() && interval.start >= heap.peek())
+                heap.poll();
+                heap.add(interval.end);
+        }
+        return heap.size();
+    }
