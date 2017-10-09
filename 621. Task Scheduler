@@ -1,0 +1,29 @@
+public int leastInterval(char[] tasks, int n) {
+        int t[] = new int[26];
+        Arrays.fill(t, 0);
+        for (char ch : tasks)
+            t[ch-'A']++;
+        PriorityQueue<Integer> queue = new PriorityQueue<Integer>(Collections.reverseOrder());
+        for (int tt : t)
+            if (tt > 0)
+                queue.add(tt);
+        int interval = 0;
+        while (!queue.isEmpty()) {
+            int i = 0;
+            List<Integer> cooltask = new ArrayList<>();
+            while (i++ <= n) {
+                if (!queue.isEmpty()) {
+                    if (queue.peek() > 1) {
+                        cooltask.add(queue.poll() - 1);
+                    } else
+                        queue.poll();
+                }
+                interval++;
+                if (queue.isEmpty() && cooltask.isEmpty())
+                    break;
+            }
+            for (Integer c : cooltask)
+                queue.add(c);
+        }
+        return interval;
+    }
