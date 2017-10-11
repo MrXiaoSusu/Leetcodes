@@ -1,0 +1,12 @@
+public int maxProfit(int[] prices) {
+        if (prices == null || prices.length == 0)
+            return 0;
+        int min = Integer.MAX_VALUE;
+        int res = 0;
+        for (int p : prices){
+            res = Math.max(res, p - min);
+            if (p < min)
+                min = p;
+        }
+        return res;
+    }
