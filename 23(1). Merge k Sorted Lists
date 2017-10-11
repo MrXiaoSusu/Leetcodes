@@ -1,0 +1,22 @@
+public ListNode mergeKLists(ListNode[] lists) {
+        ListNode res = new ListNode(-1), p = res;
+        if (lists == null && lists.length == 0)
+            return null;
+        PriorityQueue<ListNode> heap = new PriorityQueue<ListNode>(new Comparator<ListNode>() {
+            @Override
+            public int compare(ListNode o1, ListNode o2) {
+                return o1.val - o2.val;
+            }
+        });
+        for (ListNode l : lists)
+            if (l != null)
+                heap.add(l);
+        while (!heap.isEmpty()) {
+            ListNode l = heap.poll();
+            p.next = l;
+            p = l;
+            if (l.next != null)
+                heap.add(l.next);
+        }
+        return res.next;
+    }
