@@ -1,0 +1,19 @@
+class Solution {
+    public boolean wordBreak(String s, List<String> wordDict) {
+        Set<String> dic = new HashSet<>();
+        for (String ss : wordDict) {
+            dic.add(ss);
+        }
+        boolean res[] = new boolean[s.length() + 1];//res[i] [0~i-1]
+        res[0] = true;
+        for (int i = 1; i < res.length; i++) {
+            for (int j = 0; j < i; j++) {
+                if (res[j] && dic.contains(s.substring(j, i))){
+                    res[i] = true;
+                    break;
+                }
+            }
+        }
+        return res[s.length()];
+    }
+}
