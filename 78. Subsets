@@ -1,0 +1,19 @@
+class Solution {
+    public List<List<Integer>> subsets(int[] nums) {
+        List<List<Integer>> res = new LinkedList<>();
+        if (nums == null || nums.length == 0)
+            return res;
+        generate(new LinkedList(), res, 0, nums);
+        return res;            
+    }
+    public void generate(LinkedList<Integer> list, List<List<Integer>> res, int num, int[] nums) {
+        if (num >= nums.length) {
+            res.add(new LinkedList(list));
+            return;
+        }
+        generate(list, res, num + 1, nums);
+        list.add(nums[num]);
+        generate(list, res, num + 1, nums);
+        list.removeLast();
+    }
+}
