@@ -1,0 +1,35 @@
+class Solution {
+    public void nextPermutation(int[] nums) {
+        int first = -1, second = -1;
+        for (int i = nums.length - 1; i > 0; i--) {
+            if (nums[i] > nums[i-1]) {
+                first = i - 1;
+                break;
+            }
+        }
+        if (first == -1) {
+            Arrays.sort(nums);
+            return;//sorted reverse order
+        }
+        for (int i = nums.length - 1; i > first; i--) {
+            if (nums[i] > nums[first]) {
+                second = i;
+                int tmp = nums[first];
+                nums[first] = nums[second];
+                nums[second] = tmp;
+                break;
+            }
+        }
+        //reverse the number after the number we have found
+        //Arrays.sort(a, 1, a.length - 1);
+        int lo = first+1;
+        int hi = nums.length-1;
+        while(lo<hi){
+            int t = nums[lo];
+            nums[lo] = nums[hi];
+            nums[hi] = t;
+            lo ++;
+            hi --;
+        }
+    }
+}
