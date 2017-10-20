@@ -1,0 +1,36 @@
+class Solution {
+    public boolean canPartitionKSubsets(int[] nums, int k) {
+        if (nums == null || nums.length < k)
+            return false;
+        int sum = 0;
+        for (int i = 0; i < nums.length; i++)
+            sum += nums[i];
+        if (sum % k != 0 || sum < k)
+            return false;
+        sum /= k;
+        Arrays.sort(nums);
+        if (nums[nums.length - 1] > sum)
+            return false;
+        int[] buckets = new int[k];
+        Arrays.fill(buckets, 0);
+        return canPartition(nums, nums.length-1, buckets, k, sum);
+    }
+    public boolean canPartition(int[] nums, int p, int[] buckets, int k, int sum) {
+        if (p < 0) {
+            for (int i = 0; i < k; i++) {
+                if (buckets[i] != sum)
+                    return false;
+            }
+            return true;
+        }
+        for (int i = 0; i < k; i++) {
+            if (buckets[i] + nums[p] <= sum) {
+                buckets[i] += nums[p];
+                if (canPartition(nums, p-1, buckets, k, sum))
+                    return true;
+                buckets[i] -= nums[p];
+            }
+        }
+        return false;
+    }
+}
