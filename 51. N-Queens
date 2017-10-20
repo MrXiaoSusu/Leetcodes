@@ -1,0 +1,39 @@
+class Solution {
+    public List<List<String>> solveNQueens(int n) {
+        List<List<String>> res = new LinkedList<>();
+        if(n == 0)
+            return res;
+        char[][] board = new char[n][n];
+        for (int i = 0 ; i < n; i++)
+            Arrays.fill(board[i], '.');
+        dfs(board, 0, res, n);
+        return res;
+    }
+    public void dfs(char[][] board, int col, List<List<String>> res, int n) {
+        if (col == n) {
+            //add list
+            List<String> l = new LinkedList<>();
+            for (int i = 0; i < n; i++) {
+                l.add(String.valueOf(board[i]));
+            }
+            res.add(l);
+            return;
+        }
+        for (int i = 0; i < n; i++) {
+            if (validate(board, col, i, n)) {
+                board[col][i] = 'Q';
+                dfs(board, col+1, res, n);
+                board[col][i] = '.';
+            }
+        }
+        return;
+    }
+    public boolean validate(char[][] board, int x, int y, int n) {
+        for(int i = 0; i < n; i++)
+            for(int j = 0; j < n; j++) {
+                if (board[i][j] == 'Q' && (j==y||x+j==y+i||x+y==i+j)) 
+                        return false;
+            }
+        return true;
+    }
+}
