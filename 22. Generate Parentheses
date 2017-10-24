@@ -1,0 +1,20 @@
+class Solution {
+    public List<String> generateParenthesis(int n) {
+        LinkedList<String> res = new LinkedList<>();
+        if (n == 0)
+            return res;
+        gen(0, 0, n, res, "");
+        return res;
+    }
+    public void gen(int l, int r, int n, LinkedList<String> res, String s) {
+        if (l == n && r == n) {
+            res.add(new String(s));
+            return;
+        }
+        if (l < n) 
+            gen(l+1, r, n, res, s + "(");
+        if (r <l)
+            gen(l, r+1, n, res, s + ")");
+        return;
+    }
+}
