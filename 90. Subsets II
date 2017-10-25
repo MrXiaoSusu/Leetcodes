@@ -1,0 +1,26 @@
+class Solution {
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        List<List<Integer>> res = new LinkedList<List<Integer>>();
+        if (nums == null || nums.length == 0)
+            return  res;
+        Arrays.sort(nums);
+        gen(res, nums, 0, new LinkedList<Integer>());
+        return res;
+    }
+    public void gen(List<List<Integer>> res, int[] nums, int p, LinkedList<Integer> list) {
+        if (p == nums.length) {
+            res.add(new LinkedList<>(list));
+            return;
+        }
+        else {
+            int num = nums[p];
+            list.add(num);
+            gen(res, nums, p+1, list);
+            list.removeLast();
+            int next = p+1;
+            while (next < nums.length && nums[next] == num)
+                next++;
+            gen(res, nums, next, list);
+        }
+    }
+}
