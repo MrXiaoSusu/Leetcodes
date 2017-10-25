@@ -1,0 +1,26 @@
+class Solution {
+    int[] nums;
+    Random rnd;
+    public Solution(int[] nums) {
+        this.nums = nums;
+        rnd = new Random();
+    }
+    
+    public int pick(int target) {
+        int res = -1;
+        int total = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] == target) {
+                int x = rnd.nextInt(++total);
+                res = x == 0? i:res;
+            }
+        }
+        return res;
+    }
+}
+
+/**
+ * Your Solution object will be instantiated and called as such:
+ * Solution obj = new Solution(nums);
+ * int param_1 = obj.pick(target);
+ */
