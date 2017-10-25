@@ -1,0 +1,19 @@
+class Solution {
+    public String countAndSay(int n) {
+        String preS = "", curS = "";
+        preS = "1";
+        while (--n > 0) {
+            curS = "";
+            for (int i = 0; i < preS.length(); ) {
+                int j = i+1;
+                while (j < preS.length() && preS.charAt(j) == preS.charAt(i))
+                    j++;
+                int num = j - i;
+                curS += String.valueOf(num) + preS.charAt(i);
+                i = j;
+            }
+            preS = curS;
+        }
+        return preS;
+    }
+}
