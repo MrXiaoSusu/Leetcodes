@@ -1,0 +1,43 @@
+public String alienOrder(String[] words) {
+        String res = "";
+        if (words == null || words.length == 0)
+            return res;
+        HashMap<Character, Set<Character>> edges = new HashMap<>();
+        HashMap<Character, Integer> indegree = new HashMap<>();
+
+        //find all character
+        for (String word : words)
+            for (char c : word.toCharArray()) {
+                edges.put(c, new HashSet<Character>());
+                indegree.put(c, 0);
+            }
+        //fing all edges between two words
+        for (int i = 0; i < words.length - 1; i++) {
+            char[] pre = words[i].toCharArray();
+            char[] next = words[i+1].toCharArray();
+            //find the first different chars
+            for (int j = 0; j < pre.length && j < next.length; j++) {
+                if (pre[j] == next[j])
+                    continue;
+                edges.get(pre[j]).add(next[j]);
+                indegree.put(next[j], indegree.get(next[j]) + 1);
+                break;
+            }
+        }
+        //iterate all the character with indegree zero
+        Queue<Character> queue = new LinkedList<>();
+        for (char c : indegree.keySet())
+            if (indegree.get(c) == 0)
+                queue.add(c);
+        while (!queue.isEmpty()) {
+            char c = queue.poll();
+            res += c;
+            for (char nextc : edges.get(c)) {
+                int val = indegree.get(nextc);
+                if (--val == 0)
+                    queue.add(nextc);
+                indegree.put(nextc, val);
+            }
+        }
+        return res.length() == indegree.size()? res : "";
+    }
