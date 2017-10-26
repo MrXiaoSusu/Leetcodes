@@ -1,0 +1,19 @@
+class Solution {
+    public String simplifyPath(String path) {
+        Stack<String> stack = new Stack<>();
+        String[] files = path.split("/");
+        for (String s : files) {
+            if (s.equals(".") || s.equals("") || (stack.isEmpty() && s.equals(".."))) {
+                continue;
+            }else if (s.equals("..")) {
+                stack.pop();
+            } else
+                stack.push(s);
+        }
+        String res = "";
+        while (!stack.isEmpty()) {
+            res = "/" + stack.pop() + res;
+        }
+        return res == ""? "/":res;
+    }
+}
