@@ -1,0 +1,35 @@
+class Solution {
+    public int numDecodings(String s) {
+        if (s == null || s.length() == 0)
+            return 1;
+        long mod = 1000000007;
+        long[] res = new long[s.length()+1];
+        Arrays.fill(res, 0);
+        res[0] = 1;
+        res[1] = s.charAt(0) == '0'? 0 : (s.charAt(0) == '*') ? 9 : 1;
+        for (int i = 2; i < res.length; i++) {
+            //i-1 i
+            //i-2 i
+            res[i] = res[i] + ((s.charAt(i-1) == '*')? res[i-1]*9 : (s.charAt(i-1) == '0')? 0 : res[i-1]);
+                  
+            if (s.charAt(i-1) != '*' && s.charAt(i-2) != '*') {
+                int n = Integer.valueOf(s.substring(i-2, i));
+                if (n>=10 && n <= 26)
+                    res[i] = (res[i] + res[i-2])%mod;
+            } else if (s.charAt(i-1) == '*' && s.charAt(i-2) == '*') {
+                res[i] = (res[i-2]*15 + res[i])%mod;  
+            } else if (s.charAt(i-1) != '*' && s.charAt(i-2) == '*') {
+                if (s.charAt(i-1) > '6')
+                    res[i] = (res[i] + res[i-2])%mod;
+                else
+                    res[i] = (res[i] + res[i-2]*2)%mod;
+            } else {
+                if (s.charAt(i-2) == '1')
+                    res[i] = (res[i] + res[i-2]*9)%mod;
+                else if (s.charAt(i-2) == '2')
+                    res[i] = (res[i] + res[i-2]*6)%mod;
+            }
+        }
+        return (int)res[s.length()];
+    }
+}
