@@ -1,0 +1,24 @@
+class Solution {
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        List<List<Integer>> res = new LinkedList<>();
+        if (candidates == null || candidates.length == 0)
+            return res;
+        gen(candidates, 0, 0, target, res, new LinkedList<Integer>());
+        return res;
+    }
+    public void gen(int[] candidates, int p, int sum, int target, List<List<Integer>> res, List<Integer> list) {
+        if (sum == target) {
+            res.add(new LinkedList<Integer>(list));
+            return;
+        }
+        if (p == candidates.length)
+            return;
+        for (int i = p; i < candidates.length; i++) {
+            if (sum+candidates[i] <= target) {
+                list.add(candidates[i]);
+                gen(candidates, i, sum + candidates[i], target, res, list);
+                list.remove(list.size() - 1);
+            }
+        }
+    }
+}
