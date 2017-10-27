@@ -1,0 +1,19 @@
+class Solution {
+    public int leastBricks(List<List<Integer>> wall) {
+        if (wall == null || wall.size() == 0 || wall.get(0).size() == 0)
+            return 0;
+        int res = 0;
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (List<Integer> list : wall) {
+            int pos = 0;
+            for (int i = 0; i < list.size()-1; i++) {
+                pos += list.get(i);
+                if (!map.containsKey(pos))
+                    map.put(pos, 0);
+                map.put(pos, map.get(pos) + 1);
+                res = Math.max(res, map.get(pos));
+            }
+        }
+        return wall.size() - res;
+    }
+}
