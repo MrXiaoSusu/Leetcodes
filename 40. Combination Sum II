@@ -1,0 +1,27 @@
+class Solution {
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        Arrays.sort(candidates);
+        List<List<Integer>> res = new LinkedList<>();
+        if (candidates == null || candidates.length == 0)
+            return res;
+        gen(candidates, 0, 0, target, res, new LinkedList<Integer>());
+        return res;
+    }
+    public void gen(int[] candidates, int p, int sum, int target, List<List<Integer>> res, List<Integer> list) {
+        if (sum == target) {
+            res.add(new LinkedList<Integer>(list));
+            return;
+        }
+        if (p == candidates.length)
+            return;
+        if (sum + candidates[p] <= target) {
+            list.add(candidates[p]);
+            gen(candidates, p+1, sum+candidates[p], target, res, list);
+            list.remove(list.size()-1);
+        }
+        int n = p+1;
+        while (n < candidates.length && candidates[n] == candidates[n-1])
+            n++;
+        gen(candidates, n, sum, target, res, list);
+    }
+}
