@@ -1,0 +1,24 @@
+class Solution {
+    public List<List<Integer>> combinationSum3(int k, int n) {
+        List<List<Integer>> res = new LinkedList<>();
+        int[] candidates = {1,2,3,4,5,6,7,8,9};
+        if (k < 0 || n < k)
+            return res;
+        gen(candidates, 0, 0, k, n, res, new LinkedList<Integer>());
+        return res;
+    }
+    public void gen(int[] candidates, int p, int sum, int k, int target, List<List<Integer>> res, List<Integer> list) {
+        if (sum == target && list.size() == k) {
+            res.add(new LinkedList<Integer>(list));
+            return;
+        }
+        if (list.size() > k || p == candidates.length)
+            return;
+        if (sum+candidates[p] <= target) {
+            list.add(candidates[p]);
+            gen(candidates, p+1, sum + candidates[p], k, target, res, list);
+            list.remove(list.size() - 1);
+        }
+        gen(candidates, p+1, sum, k, target, res, list);
+    }
+}
