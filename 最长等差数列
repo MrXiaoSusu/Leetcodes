@@ -1,0 +1,20 @@
+public int findLongestSubsequence(int[] nums) {
+        Map<Integer, List<pair>> map = new HashMap<>();
+        for (int i = 0; i < nums.length-1; i++)
+            for (int j = i+1; j <nums.length; j++) {
+                if (!map.containsKey(nums[i]-nums[j]))
+                    map.put(nums[i]-nums[j], new LinkedList<pair>());
+                map.get(nums[i]-nums[j]).add(new pair(i, j));
+            }
+        int res = 1;
+        for (int key : map.keySet()) {
+            List<pair> tmp = map.get(key);
+            int[] dp = new int[nums.length];
+            Arrays.fill(dp, 1);
+            for (pair p : tmp) {
+                dp[p.second] = dp[p.first]+1;
+                res = Math.max(res, dp[p.second]);
+            }
+        }
+        return res;
+    }
